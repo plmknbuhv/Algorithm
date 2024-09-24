@@ -1,30 +1,25 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-int main() {
+int main()
+{
+    string input;
+    int count = 1;
 
-    string str;
-    getline(cin, str);
+    cin >> input;
 
-    int count = 0;
-
-    for (int i = 0, j = str.length() - 1; i < str.length() / 2; ++i, --j)
+    for (int i = 0; i < input.length() / 2; ++i)
     {
-        if (str[i] != str[j])
+        if (input[i] != input[input.length() - i - 1])
         {
-            count++;
+            count--;
+            break;
         }
     }
 
-    if (count == 0)
-    {
-        cout << 1 << endl;
-    }
-    else
-    {
-        cout << 0 << endl;
-    }
+    cout << count;
 
     return 0;
 }
