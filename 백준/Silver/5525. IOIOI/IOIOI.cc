@@ -2,7 +2,6 @@
 #include <utility>
 #include <unordered_map>
 #include <unordered_set>
-#include <string>
 #include <algorithm>
 #include <queue>
 using namespace std;
@@ -21,16 +20,19 @@ int main()
     cin >> M;
     cin >> S;
 
-    for (int i = 0; i < N; i++)
-        word += "OI";
-
-    for (int i = 0; i < M - (N * 2); i++)
+    int cnt = 0;
+    for (int i = 1; i < M - 1; i++)
     {
-        if (S.substr(i, (N * 2) + 1).compare(word) == 0)
+        
+        if (S[i - 1] == 'I' && S[i] == 'O' && S[i + 1] == 'I')
         {
-            result++;
+            cnt++;
             i++;
+            if (cnt >= N)
+                result++;
         }
+        else
+            cnt = 0;
     }
 
     cout << result;
