@@ -8,7 +8,6 @@
 using namespace std;
 
 int arr[1030][1030];
-int arr2[1030][1030];
 
 int main()
 {
@@ -24,11 +23,11 @@ int main()
         for (int j = 0; j < N+1; j++)
         {
             if (i == 0 || j == 0)
-                arr2[i][j] = 0;
+                arr[i][j] = 0;
             else
             {
-                cin >> arr[i][j];
-                arr2[i][j] = arr[i][j] + arr2[i - 1][j] + arr2[i][j - 1] - arr2[i - 1][j - 1];
+                cin >> temp;
+                arr[i][j] = temp + arr[i - 1][j] + arr[i][j - 1] - arr[i - 1][j - 1];
             }
         }
 
@@ -36,7 +35,7 @@ int main()
     {   
         cin >> x1 >> y1 >> x2 >> y2;
 
-        temp = arr2[x2][y2] - arr2[x1-1][y2] - arr2[x2][y1 - 1] + arr2[x1-1][y1-1];
+        temp = arr[x2][y2] - arr[x1-1][y2] - arr[x2][y1 - 1] + arr[x1-1][y1-1];
         cout << temp << '\n';
     }
 }
