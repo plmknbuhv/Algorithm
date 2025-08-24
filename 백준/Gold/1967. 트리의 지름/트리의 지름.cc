@@ -21,20 +21,20 @@ int main()
     for (int i = 1; i <= N; i++)
         leaf[i] = true;
 
-    for (int i = 1; i <= N-1; i++)
+    for (int i = 1; i <= N - 1; i++)
     {
         int a, b, c;
         cin >> a >> b >> c;
         leaf[a] = false;
-        edges[a].push_back({b, c});
-        edges[b].push_back({a, c});
+        edges[a].push_back({ b, c });
+        edges[b].push_back({ a, c });
     }
 
     stack<tuple<int, int, int>> stk;
 
     for (int i = 1; i <= N; i++)
-        if (leaf[i] = true)
-            stk.push({0, i, 0});
+        if (leaf[i] == true)
+            stk.push({ 0, i, 0 });
 
     while (stk.empty() == false)
     {
@@ -46,7 +46,7 @@ int main()
         for (auto e : edges[get<1>(temp)]) // 현재 노드랑 연결된 노드 찾기
         {
             if (get<0>(temp) != e.first) // 대신 이전 노드랑 달라야함
-                stk.push({ get<1>(temp), e.first, get<2>(temp) + e.second});
+                stk.push({ get<1>(temp), e.first, get<2>(temp) + e.second });
         }
     }
 
