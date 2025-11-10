@@ -1,89 +1,63 @@
 #include <iostream>
-#include <utility>
-#include <vector>
-#include <algorithm>
 #include <queue>
 using namespace std;
 
-int N, M;
-
-bool visit[1000][1000];
-int result = 0;
-int arr[1000][1000];
-
-struct Node
-{
-    Node(int x, int y, int cnt) : x(x), y(y), cnt(cnt){}
-    int x;
-    int y;
-    int cnt;
-};  
-
-bool Check(int x, int y)
-{
-    return (arr[y][x] == 1 && visit[y][x] == false);
-}
-
-void BFS(int x, int y)
-{
-    visit[y][x] = true;
-    queue<Node> que;
-
-    Node node(0,0,1);
-    que.push(node);
-
-    while (que.empty() == false)
-    {
-        Node temp = que.front();
-        que.pop();
-
-        if (temp.x == M-1 && temp.y == N-1)
-        {
-            cout << temp.cnt;
-            return;
-        }
-
-        if (temp.x + 1 <= M && Check(temp.x + 1, temp.y))
-        {
-            que.push(Node(temp.x+1, temp.y, temp.cnt+1));
-            visit[temp.y][temp.x + 1] = true;
-        }
-        if (temp.x - 1 >= 0 && Check(temp.x - 1, temp.y))
-        {
-            que.push(Node(temp.x-1, temp.y, temp.cnt + 1));
-            visit[temp.y][temp.x - 1] = true;
-        }
-        if (temp.y + 1 <= N && Check(temp.x, temp.y + 1))
-        {
-            que.push(Node(temp.x, temp.y + 1, temp.cnt + 1));
-            visit[temp.y+1][temp.x] = true;
-        }
-        if (temp.y - 1 >= 0 && Check(temp.x, temp.y - 1))
-        {
-            que.push(Node(temp.x, temp.y - 1, temp.cnt + 1));
-            visit[temp.y - 1][temp.x] = true;
-        }
-    }
-}
-
-
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
+    int N, M;
+    int arr[101][101];
+    int visit[101][101];
     cin >> N >> M;
-    string input;
-   
+
     for (int i = 0; i < N; i++)
-    {
-        cin >> input;
         for (int j = 0; j < M; j++)
         {
-            arr[i][j] = input[j] - '0';
+            visit[i][j] = -1;
+        }
+
+    for (int i = 0; i < N; i++)
+    {
+        string temp;
+        cin >> temp;
+        for (int j = 0; j < M; j++)
+        {
+            arr[i][j] = temp[j] - '0';
         }
     }
-    
-    BFS(0, 0);
+
+    queue<pair<int, int>> q;
+    q.push({0,0});
+    visit[0][0] = 0;
+
+    while (q.empty() == false)
+    {
+        pair<int, int> t = q.front(); q.pop();
+
+        if (t.first == N - 1 && t.second == M - 1)
+        {
+            cout << visit[t.first][t.second] + 1;
+            break;
+        }
+
+        if (t.first + 1 < N && visit[t.first + 1][t.second] == -1 && arr[t.first + 1][t.second] == 1)
+        {
+            visit[t.first + 1][t.second] = visit[t.first][t.second] + 1;
+            q.push({t.first+1, t.second});
+        }
+        if (t.first - 1 >= 0 && visit[t.first - 1][t.second] == -1 && arr[t.first - 1][t.second] == 1)
+        {
+            visit[t.first - 1][t.second] = visit[t.first][t.second] + 1;
+            q.push({ t.first - 1, t.second });
+        }
+        if (t.second + 1 < M && visit[t.first][t.second + 1] == -1 && arr[t.first][t.second+1] == 1)
+        {
+            visit[t.first][t.second + 1] = visit[t.first][t.second] + 1;
+            q.push({ t.first, t.second + 1 });
+        }
+        if (t.second - 1 >= 0 && visit[t.first][t.second - 1] == -1 && arr[t.first][t.second - 1] == 1)
+        {
+            visit[t.first][t.second - 1] = visit[t.first][t.second] + 1;
+            q.push({ t.first, t.second - 1 });
+        }
+    }
 }
