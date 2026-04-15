@@ -1,63 +1,73 @@
 #include <iostream>
+#include <vector>
 #include <queue>
+
 using namespace std;
+
+bool visit[101][101] = {};
+int arr[101][101] = {};
 
 int main()
 {
-    int N, M;
-    int arr[101][101];
-    int visit[101][101];
-    cin >> N >> M;
+	int N, M;
+	cin >> N >> M;
 
-    for (int i = 0; i < N; i++)
-        for (int j = 0; j < M; j++)
-        {
-            visit[i][j] = -1;
-        }
+	for (int i = 0; i < N; i++)
+	{
+		string input;
+		cin >> input;
 
-    for (int i = 0; i < N; i++)
-    {
-        string temp;
-        cin >> temp;
-        for (int j = 0; j < M; j++)
-        {
-            arr[i][j] = temp[j] - '0';
-        }
-    }
+		for (int j = 0; j < M; j++)
+		{
+			arr[i][j] = input[j] - '0';
+		}
+	}
 
-    queue<pair<int, int>> q;
-    q.push({0,0});
-    visit[0][0] = 0;
+	queue<pair<int, int>> que;
+	queue<int> cntQue;
+	que.push({ 0, 0 });
+	cntQue.push(1);
 
-    while (q.empty() == false)
-    {
-        pair<int, int> t = q.front(); q.pop();
+	while (que.empty() == false)
+	{
+		int cnt = cntQue.front();
+		pair<int, int> num = que.front();
+		int x = num.first;
+		int y = num.second;
 
-        if (t.first == N - 1 && t.second == M - 1)
-        {
-            cout << visit[t.first][t.second] + 1;
-            break;
-        }
+		que.pop();
+		cntQue.pop();
 
-        if (t.first + 1 < N && visit[t.first + 1][t.second] == -1 && arr[t.first + 1][t.second] == 1)
-        {
-            visit[t.first + 1][t.second] = visit[t.first][t.second] + 1;
-            q.push({t.first+1, t.second});
-        }
-        if (t.first - 1 >= 0 && visit[t.first - 1][t.second] == -1 && arr[t.first - 1][t.second] == 1)
-        {
-            visit[t.first - 1][t.second] = visit[t.first][t.second] + 1;
-            q.push({ t.first - 1, t.second });
-        }
-        if (t.second + 1 < M && visit[t.first][t.second + 1] == -1 && arr[t.first][t.second+1] == 1)
-        {
-            visit[t.first][t.second + 1] = visit[t.first][t.second] + 1;
-            q.push({ t.first, t.second + 1 });
-        }
-        if (t.second - 1 >= 0 && visit[t.first][t.second - 1] == -1 && arr[t.first][t.second - 1] == 1)
-        {
-            visit[t.first][t.second - 1] = visit[t.first][t.second] + 1;
-            q.push({ t.first, t.second - 1 });
-        }
-    }
+		if (x == N-1 && y == M-1)
+		{
+			cout << cnt;
+			break;
+		}
+
+		if (x - 1 >= 0 && visit[x - 1][y] == false && arr[x - 1][y] == 1)
+		{
+			visit[x - 1][y] = true;
+			que.push({ x-1, y });
+			cntQue.push(cnt+1);
+		}
+		if (y - 1 >= 0 && visit[x][y-1] == false && arr[x][y-1] == 1)
+		{
+			visit[x][y-1] = true;
+			que.push({ x, y - 1 });
+			cntQue.push(cnt + 1);
+		}
+
+		if (x + 1 < N && visit[x + 1][y] == false && arr[x + 1][y] == 1)
+		{
+			visit[x + 1][y] = true;
+			que.push({ x + 1, y });
+			cntQue.push(cnt + 1);
+		}
+		if (y + 1 < M && visit[x][y + 1] == false && arr[x][y + 1] == 1)
+		{
+			visit[x][y+1] = true;
+			que.push({ x, y + 1 });
+			cntQue.push(cnt + 1);
+		}
+	}
 }
