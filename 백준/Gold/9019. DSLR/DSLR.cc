@@ -1,69 +1,107 @@
 #include <iostream>
-#include <utility>
-#include <unordered_map>
-#include <set>
-#include <algorithm>
+#include <vector>
 #include <queue>
+
 using namespace std;
 
-struct Node {
-    int prev;
-    char symbol;
-};
-
-int D(int x) { return (x * 2) % 10000; }
-int S(int x) { return x == 0 ? 9999 : x - 1; }
-int L(int x) { return (x % 1000) * 10 + x / 1000; }
-int R(int x) { return (x / 10) + (x % 10) * 1000; }
-
-string Check(int A, int B)
+int D(int input)
 {
-    vector<bool> visit(10000, false);
-    vector<Node> trace(10000, { -1, 0 });
+	return (input * 2) % 10000;
+}
 
-    queue<int> que;
-    que.push(A);
-    visit[A] = true;
+int S(int input)
+{
+	int t = input - 1;
+	if (t == -1)
+		t = 9999;
 
-    while (true)
-    {
-        int temp = que.front(); que.pop();
+	return t;
+}
 
-        if (temp == B)
-            break;
+int L(int input)
+{
+	int t = input / 1000;
+	int num = input % 1000;
+	num *= 10;
+	num += t;
+	return num;
+}
 
-        int nextStates[4] = { D(temp), S(temp), L(temp), R(temp) };
-        char symbols[4] = { 'D', 'S', 'L', 'R' };
+int R(int input)
+{
+	int num = input % 10;
+	num *= 1000;
+	int t = input / 10;
 
-        for (int i = 0; i < 4; i++) {
-            int nxt = nextStates[i];
-            if (!visit[nxt]) {
-                visit[nxt] = true;
-                trace[nxt] = { temp, symbols[i] };
-                que.push(nxt);
-            }
-        }
-    }
-
-    string result;
-    for (int cur = B; cur != A; cur = trace[cur].prev)
-        result.push_back(trace[cur].symbol);
-    reverse(result.begin(), result.end());
-    return result;
+	num += t;
+	return num;
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-    long long cnt, A, B;
-    cin >> cnt;
-    for (int i = 0; i < cnt; i++)
-    {
-        cin >> A >> B;
+	int T;
+	cin >> T;
 
-        cout << Check(A, B) << '\n';
-    }
+	for (int i = 0; i < T; i++)
+	{
+		int input, input2;
+		cin >> input >> input2; 
+		bool visit[10001] = {};
+
+		queue<string> que;
+		queue<int> queNum;
+		que.push("");
+		queNum.push(input);
+
+		while (que.empty() == false)
+		{
+			string str = que.front();
+			int num = queNum.front();
+			que.pop();
+			queNum.pop();
+
+			if (num == input2)
+			{
+				cout << str << '\n';
+				break;
+			}
+
+			int DNum = D(num);
+			if (visit[DNum] == false)
+			{
+				visit[DNum] = true;
+				que.push(str + "D");
+				queNum.push(DNum);
+			}
+
+			int SNum = S(num);
+			if (visit[SNum] == false)
+			{
+				visit[SNum] = true;
+				que.push(str + "S");
+				queNum.push(SNum);
+			}
+
+			int LNum = L(num);
+			if (visit[LNum] == false)
+			{
+				visit[LNum] = true;
+				que.push(str + "L");
+				queNum.push(LNum);
+			}
+
+			int RNum = R(num);
+			if (visit[RNum] == false)
+			{
+				visit[RNum] = true;
+				que.push(str + "R");
+				queNum.push(RNum);
+			}
+		}
+	}
 }
+
