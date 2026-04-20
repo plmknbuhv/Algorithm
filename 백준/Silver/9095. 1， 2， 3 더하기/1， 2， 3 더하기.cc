@@ -1,41 +1,41 @@
 #include <iostream>
-#include <utility>
 #include <vector>
-#include <algorithm>
 #include <queue>
+#include <algorithm>
+#include <map>
+
 using namespace std;
-long long result;
-long long input;
 
-void Check(long long num)
-{
-    if (num > input)
-        return;
-    if (num == input)
-    {
-        result++;
-        return;
-    }
-
-    Check(num+1);
-    Check(num+2);
-    Check(num+3);
-}
+int DP[1000];
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-    int cnt;
-    cin >> cnt;
+	int T;
+	cin >> T;
 
-    for (int i = 0; i < cnt; i++)
-    {
-        result = 0;
-        cin >> input;
-        Check(0);
-        cout << result << endl;
-    }
+	DP[0] = 0;
+	DP[1] = 1;
+	DP[2] = 2;
+	DP[3] = 4;
+
+	for (int i = 4; i < 12; i++)
+	{
+		int result = DP[i - 1];
+		result += DP[i - 2];
+		result += DP[i - 3];
+
+		DP[i] = result;
+	}
+
+	for (int i = 0; i < T; i++)
+	{
+		int N;
+		cin >> N;
+		cout << DP[N] << '\n';
+	}
 }
+
