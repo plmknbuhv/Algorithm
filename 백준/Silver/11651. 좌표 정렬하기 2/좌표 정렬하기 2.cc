@@ -1,52 +1,44 @@
 #include <iostream>
-#include <utility>
 #include <vector>
+#include <queue>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
-typedef pair<int,int> Vector2;
+pair<int, int> arr[100001] = {};
 
-int compare(const void* a, const void* b)
+bool cmp(pair<int, int> pair1, pair<int, int> pair2)
 {
-    int x1 = ((Vector2*)(a))->first;
-    int y1 = ((Vector2*)(a))->second;
-    int x2 = ((Vector2*)(b))->first;
-    int y2 = ((Vector2*)(b))->second;
-
-    if (y1 < y2)
-        return -1;
-    else if (y1 == y2)
-        if (x1 < x2)
-            return -1;
-
-    return 1;
+	if (pair1.second != pair2.second)
+		return pair1.second < pair2.second;
+	else
+		return pair1.first < pair2.first;
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-    int count;
-    cin >> count;
+	int N;
+	cin >> N;
 
-    vector<Vector2> arr = {};
+	for (int i = 0; i < N; i++)
+	{
+		int x, y;
+		cin >> x >> y;
 
-    for (int i = 0; i < count; ++i)
-    {
-        int temp1;
-        int temp2;
-        cin >> temp1 >> temp2;
-        arr.emplace_back(temp1,temp2);
-    }
+		arr[i].first = x;
+		arr[i].second = y;
+	}
 
-    qsort(&arr[0], arr.size(), sizeof(arr[0]), compare);
+	sort(arr, arr + N, cmp);
 
-
-    for (int i = 0; i < count; ++i)
-    {
-        cout << arr[i].first << " " << arr[i].second << "\n";
-    }
+	for (int i = 0; i < N; i++)
+	{
+		cout << arr[i].first << " " << arr[i].second << '\n';
+	}
 }
+			
