@@ -1,37 +1,33 @@
 #include <iostream>
-#include <utility>
-#include <algorithm>
+#include <vector>
 #include <queue>
-#include <deque>
+#include <algorithm>
+#include <map>
+
 using namespace std;
-unsigned long long arr[10000000];
 
-unsigned long long tile(unsigned long long num)
-{
-    if (num < 0)
-        return 0;
-    if (num <= 3)
-        return num;
-
-    if (arr[num] == 0)
-    {
-        arr[num] = tile(num - 1) + tile(num - 2);
-    }
-
-    return arr[num] % 10007;
-}
+int DP[10000] = {};
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-    unsigned long long input;
-    for (int i = 0; i < 10000000; i++)
-        arr[i] = 0;
-   
-    cin >> input;
+	DP[0] = 0;
+	DP[1] = 1;
+	DP[2] = 2;
 
-    cout << tile(input) % 10007;
+	int input;
+	cin >> input;
+
+	for (int i = 3; i <= input; i++)
+	{
+		DP[i] = DP[i - 1] + DP[i - 2];
+		DP[i] %= 10007;
+	}
+
+
+	cout << DP[input];
 }
+
