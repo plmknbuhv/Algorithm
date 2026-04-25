@@ -1,47 +1,52 @@
 #include <iostream>
-#include <utility>
-#include <unordered_map>
-#include <set>
-#include <stack>
-#include <algorithm>
+#include <vector>
 #include <queue>
+#include <algorithm>
+#include <map>
+
 using namespace std;
 
-int arr[100000];
-bool visit[100000] = {};
 int N, M;
+int arr[9] = {};
+bool visit[9] = {};
 
-void Check(int num, int cnt)
+void Check(int cnt)
 {
-    arr[cnt] = num;
-    visit[num] = true;
-    if (cnt == M-1)
-    {
-        for (int i = 0; i < cnt+1; i++)
-            cout << arr[i] << " ";
-        cout << '\n';
-        visit[num] = false;
-        return;
-    }
+	if (cnt == M)
+	{
+		for (int i = 0; i < M; i++)
+			cout << arr[i] << " ";
+		cout << '\n';
 
-    for (int i = 1; i <= N; i++)
-    {
-        if (i != num && visit[i] == false)
-            Check(i, cnt+1);
-    }
-    visit[num] = false;
+		return;
+	}
+
+	for (int i = 1; i <= N; i++)
+	{
+		if (visit[i] == false)
+		{
+			arr[cnt] = i;
+			visit[i] = true;
+			Check(cnt+1);
+			visit[i] = false;
+		}
+	}
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-    cin >> N >> M;
+	cin >> N >> M;
 
-    for (int i = 1; i <= N; i++)
-    {
-        Check(i, 0);
-    }
+	for (int i = 1; i <= N; i++)
+	{
+		arr[0] = i;
+		visit[i] = true;
+		Check(1);
+		visit[i] = false;
+	}
 }
+			
