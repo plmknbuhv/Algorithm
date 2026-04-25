@@ -1,39 +1,58 @@
 #include <iostream>
-#include <string>
-#include <string.h>
-#include <algorithm>
 #include <vector>
+#include <queue>
+#include <algorithm>
+#include <map>
+
 using namespace std;
 
-bool Cmp(string str1, string str2)
+string arr[20001] = {};
+
+bool cmp(string str1, string str2)
 {
-	if (str1.length() == str2.length())
-		return str1 < str2;
-	else
+	if (str1.length() != str2.length())
 		return str1.length() < str2.length();
+	else
+		return str1 < str2;
 }
 
-int main() {
-	int cnt;
-	cin >> cnt;
-	vector<string> arr;
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-	for (int i = 0; i < cnt; i++)
+	int N;
+	cin >> N;
+	for (int  i = 0; i < N; i++)
 	{
-		string temp;
-		cin >> temp;
-		arr.push_back(temp);
+		string input;
+		bool isContain = false;
+		cin >> input;
+
+		for (int j = 0; j < i; j++)
+		{
+			if (arr[j] == input)
+			{
+				isContain = true;
+				break;
+			}
+		}
+
+		if (isContain == false)
+			arr[i] = input;
+		else
+		{
+			N--;
+			i--;
+		}
 	}
 
-	sort(arr.begin(), arr.end(), Cmp);
+	sort(arr, arr + N, cmp);
 
-	string prev = arr[0];
-	cout << prev << endl;
-	for (string str : arr)
+	for (int i = 0; i < N; i++)
 	{
-		if (str.compare(prev) != 0)
-			cout << str << endl;
-
-		prev = str;
+		cout << arr[i] << '\n';
 	}
 }
+			
