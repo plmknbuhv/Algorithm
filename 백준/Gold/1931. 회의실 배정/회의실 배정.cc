@@ -1,49 +1,52 @@
 #include <iostream>
-#include <utility>
+#include <vector>
 #include <queue>
 #include <algorithm>
-#include <unordered_map>
+#include <map>
+
 using namespace std;
 
-struct Meeting
-{
-    int start;
-    int end;
-};
+int N;
+pair<int, int> arr[100001] = {};
 
-bool cmp(Meeting meeting1, Meeting meeting2)
+bool cmp(pair<int, int> pair1, pair<int, int> pair2)
 {
-    if (meeting1.end == meeting2.end)
-        return meeting1.start < meeting2.start;
-    else
-        return meeting1.end < meeting2.end;
+	if (pair1.second != pair2.second)
+		return pair1.second < pair2.second;
+	else
+		return pair1.first < pair2.first;
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	cin >> N;
+	int T = 0, C = 0;
 
 
-    int cnt;
-    cin >> cnt;
-    Meeting *arr = new Meeting[cnt];
+	for (int i = 0; i < N; i++)
+	{
+		int x, y;
+		cin >> x >> y;
 
-    for (int i = 0; i < cnt; i++)
-        cin >> arr[i].start >> arr[i].end;
+		arr[i].first = x;
+		arr[i].second = y;
+	}
 
-    sort(arr, arr + cnt, cmp);
+	sort(arr, arr + N, cmp);
 
-    int temp = -1, result = 0;
-    for (int i = 0; i < cnt; i++)
-    {
-        if (temp <= arr[i].start)
-        {
-            result++;
-            temp = arr[i].end;
-        }
-    }
+	for (int i = 0; i < N; i++)
+	{
+		if (arr[i].first >= T)
+		{
+			C++;
+			T = arr[i].second;
+		}
+	}
 
-    cout << result;
+	cout << C;
 }
+			
